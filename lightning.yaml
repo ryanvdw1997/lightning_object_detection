@@ -1,0 +1,7 @@
+path: ../data/frames/processed
+
+train: images/train
+val: images/val
+
+names:
+  0: lightning-bolt
