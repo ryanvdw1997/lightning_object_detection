@@ -1,7 +1,9 @@
-path: ../data/frames/processed
+path: ../data/
 
 train: images/train
 val: images/val
 
 names:
   0: lightning-bolt
+  1: tree
+  2: building

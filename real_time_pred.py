@@ -2,16 +2,16 @@ import cv2
 import torch
 import numpy as np
 
-WEIGHTS_PATH = 'yolov5/runs/train/lightning_run13/weights/best.pt'
+WEIGHTS_PATH = 'latest_training_run/lightning_run6/weights/best.pt'
 
-VIDEO_SOURCE = 'data/videos/lightning_video4.mp4' 
+VIDEO_SOURCE = 'data/videos/lightning_video3.mp4' 
 
 model = torch.hub.load("ultralytics/yolov5", "custom", path=WEIGHTS_PATH)
 
 APPLY_GAMMA = False
 GAMMA = .2
 
-CONF_THRESHOLD = .2
+CONF_THRESHOLD = .3
 
 
 def adjust_gamma(image: np.ndarray, gamma: float = 1.0) -> np.ndarray:
@@ -74,20 +74,27 @@ def main():
 
         for *box, conf, cls in detections:
             x1, y1, x2, y2 = map(int, box)
-
+            class_list = ['lightning-bolt', 'tree', 'building']
+            class_colors = {'lightning-bolt': (199, 204, 55), 
+                       'tree': (26, 173, 70), 
+                       'building': (92, 83, 83)}
             # Draw a green rectangle around the predicted lightning
-            cv2.rectangle(frame_bgr, (x1, y1), (x2, y2), (0, 255, 0), 2)
-
+            class_detected = int(cls)
             # Put a label with confidence
-            label = f"Lightning {conf:.2f}"
+            class_name = class_list[class_detected]
+            class_color = class_colors[class_name]
+            label = f"{class_name} {conf:.2f}"
+            cv2.rectangle(frame_bgr, (x1, y1), (x2, y2), class_color, 2)
+            
+            
             cv2.putText(
                 frame_bgr,
                 label,
                 (x1, y1 - 10),
                 cv2.FONT_HERSHEY_SIMPLEX,
                 0.5,
-                (0, 255, 0),
-                2,
+                class_color,
+                3,
             )
 
         # (8) Display FPS (optional)

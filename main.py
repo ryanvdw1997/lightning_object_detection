@@ -6,6 +6,7 @@ if __name__ == "__main__":
         batch_size=16,
         epochs=20,
         data="lightning.yaml",
+        hyp='hyp_lightning.yaml',
         weights="yolov5s.pt",
         name="lightning_run"
     )
